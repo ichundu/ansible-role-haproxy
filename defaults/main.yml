@@ -1,0 +1,68 @@
+---
+# defaults file for haproxy
+
+haproxy_log_file: "/var/log/haproxy.log"
+
+# HAProxy global section settings
+haproxy_global: |
+  global
+      log         127.0.0.1 local2 
+
+      chroot      /var/lib/haproxy
+      pidfile     /var/run/haproxy.pid
+      maxconn     4000
+      user        haproxy
+      group       haproxy
+      daemon
+      
+      # turn on stats unix socket
+      stats socket /var/lib/haproxy/stats
+
+# HAProxy defaults section settings
+haproxy_defaults: |
+  defaults
+      mode                    http
+      log                     global
+      option                  httplog
+      option                  dontlognull
+      option http-server-close
+      option forwardfor       except 127.0.0.0/8
+      option                  redispatch
+      retries                 3
+      timeout http-request    10s
+      timeout queue           1m
+      timeout connect         10s
+      timeout client          1m
+      timeout server          1m
+      timeout http-keep-alive 10s
+      timeout check           10s
+      maxconn                 3000
+      
+      # Stats settings
+      stats enable
+      stats uri /stats
+      stats hide-version
+
+# HAProxy frontend section settings
+haproxy_frontend: |
+  frontend  main *:5000
+      acl url_static       path_beg       -i /static /images /javascript /stylesheets
+      acl url_static       path_end       -i .jpg .gif .png .css .js
+      
+      use_backend static          if url_static
+      default_backend             app
+
+# Static backend section settings
+haproxy_backend_static: |
+  backend static
+      balance     roundrobin
+      server      static 127.0.0.1:4331 check
+
+# Backends section settings
+haproxy_backends: |
+  backend app
+      balance     roundrobin
+      server  app1 127.0.0.1:5001 check
+      server  app2 127.0.0.1:5002 check
+      server  app3 127.0.0.1:5003 check
+      server  app4 127.0.0.1:5004 check

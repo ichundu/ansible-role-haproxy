@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+# Load UDP module for HAProxy
+$ModLoad imudp
+$UDPServerAddress 127.0.0.1
+$UDPServerRun 514
+
+# Send HAProxy logs to {{ haproxy_log_file }}
+local2.*		{{ haproxy_log_file }}
+& stop
+
+# {{ ansible_managed }}
