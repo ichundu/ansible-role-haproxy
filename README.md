@@ -18,7 +18,7 @@ Variables in `defaults/main.yml` mainly contain sections for configuring HAProxy
 | `haproxy_global` | Configuration options for the 'global' section |
 | `haproxy_defaults` | Configuration options for the 'defaults' section |
 | `haproxy_frontend` | Configuration options for the 'frontend' section |
-| `haproxy_backend_static | Configuration options for the 'static backend' section |
+| `haproxy_backend_static` | Configuration options for the 'static backend' section |
 | `haproxy_backends` | Configuration options for the 'backend' section |
 | `haproxy_log_file` | Path to the file where HAProxy logs are stored |
 
