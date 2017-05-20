@@ -23,7 +23,7 @@ install:
 
 script:
   # Install role from galaxy
-  - ansible-galaxy --force -r test/requirements.yml
+  - ansible-galaxy install --force -r test/requirements.yml
 
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
