@@ -1,6 +1,9 @@
 Role Name: HAProxy
 ==================
 
+
+[![Build Status](https://travis-ci.org/ichundu/ansible-role-haproxy.svg?branch=master)](https://travis-ci.org/ichundu/ansible-role-haproxy.svg?branch=master)
+
 This role installs and configures HAProxy on RedHat family systems. The configuration is the default provided with HAProxy when installed, which can be customized as needed. Also logging is enabled for HAProxy via rsyslog.
 
 Requirements
@@ -30,9 +33,11 @@ None.
 Example Playbook
 ----------------
 
-    - hosts: servers
-      roles:
-         - ichundu.haproxy
+```yaml
+- hosts: servers
+  roles:
+     - ichundu.haproxy
+```
 
 License
 -------
