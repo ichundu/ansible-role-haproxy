@@ -34,6 +34,9 @@
 
 - name: Enable HAProxy service
   service:
-    name: haproxy
+    name: "{{ items }}"
     state: started
     enabled: true
+  with_items:
+    - rsylsog
+    - haproxy
