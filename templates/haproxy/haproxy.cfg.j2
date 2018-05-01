@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+{% if haproxy_global is defined and haproxy_global | length > 0 %}
+{{ haproxy_global }}
+{% endif %}
+
+{% if haproxy_defaults is defined and haproxy_defaults | length > 0 %}
+{{ haproxy_defaults }}
+{% endif %}
+
+{% if haproxy_frontends is defined and haproxy_frontends | length > 0 %}
+{{ haproxy_frontends }}
+{% endif %}
+
+{% if haproxy_frontends is defined and haproxy_backends | length > 0 %}
+{{ haproxy_backends }}
+{% endif %}
+
+{% if haproxy_listen is defined and haproxy_listen | length > 0 %}
+{{ haproxy_listen }}
+{% endif %}

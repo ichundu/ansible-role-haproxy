@@ -1,4 +1,4 @@
 ---
 
 - src: ichundu.haproxy
-  name: haproxy
+  version: master

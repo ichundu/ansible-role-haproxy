@@ -1,24 +1,25 @@
 ---
 # defaults file for haproxy
 
-haproxy_log_file: "/var/log/haproxy.log"
+haproxy_logs_dir: "/var/log/haproxy"
+haproxy_log_file: "{{ haproxy_logs_dir }}/haproxy.log"
+haproxy_syslog_facility: "local2"
+haproxy_stats_socket: "/var/lib/haproxy/stats level admin"
+haproxy_stats_uri: "/haproxy?stats"
 
-# HAProxy global section settings
+# Global configuration section
 haproxy_global: |
   global
-      log         127.0.0.1 local2 
-
-      chroot      /var/lib/haproxy
-      pidfile     /var/run/haproxy.pid
-      maxconn     4000
-      user        haproxy
-      group       haproxy
+      log          127.0.0.1 {{ haproxy_syslog_facility }}
+      chroot       /var/lib/haproxy
+      pidfile      /var/run/haproxy.pid
+      maxconn      4000
+      user         haproxy
+      group        haproxy
       daemon
-      
-      # turn on stats unix socket
-      stats socket /var/lib/haproxy/stats
+      stats socket {{ haproxy_stats_socket }}
 
-# HAProxy defaults section settings
+# Defaults configuration section
 haproxy_defaults: |
   defaults
       mode                    http
@@ -37,32 +38,37 @@ haproxy_defaults: |
       timeout http-keep-alive 10s
       timeout check           10s
       maxconn                 3000
-      
-      # Stats settings
+
       stats enable
-      stats uri /stats
+      stats uri {{ haproxy_stats_uri }}
       stats hide-version
 
-# HAProxy frontend section settings
-haproxy_frontend: |
-  frontend  main *:5000
-      acl url_static       path_beg       -i /static /images /javascript /stylesheets
-      acl url_static       path_end       -i .jpg .gif .png .css .js
-      
-      use_backend static          if url_static
-      default_backend             app
+### Frontends configuration section
+# haproxy_frontends: |
+#   frontend  main *:5000
+#       acl url_static       path_beg       -i /static /images /javascript /stylesheets
+#       acl url_static       path_end       -i .jpg .gif .png .css .js
 
-# Static backend section settings
-haproxy_backend_static: |
-  backend static
-      balance     roundrobin
-      server      static 127.0.0.1:4331 check
+#       use_backend static          if url_static
+#       default_backend             app
 
-# Backends section settings
-haproxy_backends: |
-  backend app
-      balance     roundrobin
-      server  app1 127.0.0.1:5001 check
-      server  app2 127.0.0.1:5002 check
-      server  app3 127.0.0.1:5003 check
-      server  app4 127.0.0.1:5004 check
+### Backends configuration section
+# haproxy_backends: |
+#   backend static
+#       balance     roundrobin
+#       server      static 127.0.0.1:4331 check
+
+#   backend app
+#       balance     roundrobin
+#       server  app1 127.0.0.1:5001 check
+#       server  app2 127.0.0.1:5002 check
+#       server  app3 127.0.0.1:5003 check
+#       server  app4 127.0.0.1:5004 check
+
+### Listen configuration section
+# harpoxy_listen: |
+#   listen  main *:5000
+#       mode        http
+#       balance     roundrobin
+#       server      app1 127.0.0.1:5001 check
+#       server      app2 127.0.0.1:5002 check
