@@ -3,23 +3,37 @@
 
 - name: Ensure HAProxy is installed
   yum:
-    name: haproxy
+    name: "{{ item }}"
     state: present
+  with_items:
+    - haproxy
+    - rsyslog
 
 - name: Configure HAProxy
   template:
-    src: haproxy.cfg.j2
+    src: haproxy/haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
+    validate: haproxy -c -f %s
   notify: restart haproxy
 
 - name: Configure rsyslog for HAProxy logs
   template:
-    src: haproxy.conf.j2
+    src: rsyslog.d/haproxy.conf.j2
     dest: /etc/rsyslog.d/haproxy.conf
   notify: restart rsyslog
+
+- name: Ensure logs directory exists
+  file:
+    path: "{{ haproxy_logs_dir }}"
+    state: directory
+
+- name: Configure logrotate
+  template:
+    src: logrotate.d/haproxy.j2
+    dest: /etc/logrotate.d/haproxy
 
 - name: Enable HAProxy service
   service:
     name: haproxy
     state: started
-    enabled: True
+    enabled: true
