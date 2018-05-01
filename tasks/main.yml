@@ -38,5 +38,5 @@
     state: started
     enabled: true
   with_items:
-    - rsylsog
+    - rsyslog
     - haproxy
