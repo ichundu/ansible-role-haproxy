@@ -12,7 +12,7 @@
 {{ haproxy_frontends }}
 {% endif %}
 
-{% if haproxy_frontends is defined and haproxy_backends | length > 0 %}
+{% if haproxy_backends is defined and haproxy_backends | length > 0 %}
 {{ haproxy_backends }}
 {% endif %}
 
