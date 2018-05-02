@@ -1,12 +1,13 @@
 ---
 # tasks file for haproxy
 
-- name: Ensure HAProxy is installed
+- name: Ensure HAProxy required packages are installed
   yum:
     name: "{{ item }}"
     state: present
   with_items:
     - haproxy
+    - socat
     - rsyslog
 
 - name: Configure HAProxy
